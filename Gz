@@ -1,0 +1,30 @@
+-- Coloque isso em StarterPlayerScripts (LocalScript)
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+-- Função que liga o evento ao personagem
+local function setupCharacter(char)
+	local humanoid = char:WaitForChild("Humanoid")
+
+	UserInputService.InputBegan:Connect(function(input, gp)
+		if gp then return end -- ignora se estiver digitando em UI etc
+		if input.KeyCode == Enum.KeyCode.F then
+			if humanoid and humanoid.Health > 0 then
+				humanoid.Sit = true
+			end
+		end
+	end)
+end
+
+-- Primeira vez
+if player.Character then
+	setupCharacter(player.Character)
+end
+
+-- Quando respawnar
+player.CharacterAdded:Connect(function(char)
+	setupCharacter(char)
+end)
